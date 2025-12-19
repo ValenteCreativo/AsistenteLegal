@@ -14,72 +14,83 @@ export default function StatCard({
 }) {
     const colorClasses = {
         primary: {
-            bg: 'bg-gradient-to-br from-[var(--primary-700)] to-[var(--primary-600)]',
-            iconBg: 'bg-white/20',
-            text: 'text-white'
+            gradient: 'from-[var(--accent-primary)] to-purple-600',
+            glow: 'shadow-[0_0_30px_rgba(6,182,212,0.3)]',
+            iconBg: 'bg-[var(--accent-primary)]'
         },
         success: {
-            bg: 'bg-gradient-to-br from-[var(--success)] to-emerald-500',
-            iconBg: 'bg-white/20',
-            text: 'text-white'
+            gradient: 'from-emerald-500 to-teal-600',
+            glow: 'shadow-[0_0_30px_rgba(16,185,129,0.3)]',
+            iconBg: 'bg-[var(--success)]'
         },
         warning: {
-            bg: 'bg-gradient-to-br from-[var(--accent-gold)] to-[var(--accent-gold-light)]',
-            iconBg: 'bg-white/20',
-            text: 'text-white'
+            gradient: 'from-amber-500 to-orange-600',
+            glow: 'shadow-[0_0_30px_rgba(245,158,11,0.3)]',
+            iconBg: 'bg-[var(--warning)]'
         },
         danger: {
-            bg: 'bg-gradient-to-br from-[var(--danger)] to-rose-500',
-            iconBg: 'bg-white/20',
-            text: 'text-white'
+            gradient: 'from-rose-500 to-red-600',
+            glow: 'shadow-[0_0_30px_rgba(239,68,68,0.3)]',
+            iconBg: 'bg-[var(--danger)]'
         },
         neutral: {
-            bg: 'bg-white border border-[var(--border)]',
-            iconBg: 'bg-[var(--primary-100)]',
-            text: 'text-[var(--text-primary)]'
+            gradient: 'from-gray-600 to-gray-700',
+            glow: 'shadow-lg',
+            iconBg: 'bg-[var(--surface-hover)]'
         }
     };
 
     const colors = colorClasses[color];
 
     const TrendIcon = trend === 'up' ? TrendingUp : trend === 'down' ? TrendingDown : Minus;
-    const trendColor = trend === 'up' ? 'text-emerald-300' : trend === 'down' ? 'text-rose-300' : 'text-white/70';
+    const trendColor = trend === 'up' ? 'text-[var(--success)]' : trend === 'down' ? 'text-[var(--danger)]' : 'text-[var(--text-muted)]';
 
     return (
         <div
             className={`
-        ${colors.bg} rounded-2xl p-6 shadow-lg 
-        transition-all duration-300 cursor-pointer
-        hover:shadow-xl hover:-translate-y-1
-        ${onClick ? 'cursor-pointer' : ''}
+        relative overflow-hidden
+        bg-[var(--glass-bg)] backdrop-blur-xl
+        border border-[var(--border)] hover:border-[var(--border-strong)]
+        rounded-2xl p-6
+        transition-all duration-500 
+        hover:${colors.glow} hover:-translate-y-1
+        group cursor-pointer
       `}
             onClick={onClick}
         >
-            <div className="flex items-start justify-between mb-4">
-                <div className={`${colors.iconBg} p-3 rounded-xl`}>
-                    <Icon className={`w-7 h-7 ${color === 'neutral' ? 'text-[var(--primary-700)]' : 'text-white'}`} />
+            {/* Efecto de gradiente superior */}
+            <div className={`absolute top-0 left-0 right-0 h-1 bg-gradient-to-r ${colors.gradient} opacity-60 group-hover:opacity-100 transition-opacity`} />
+
+            {/* Efecto de brillo en hover */}
+            <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+
+            <div className="relative z-10">
+                <div className="flex items-start justify-between mb-4">
+                    <div className={`${colors.iconBg} p-3 rounded-xl shadow-lg`}>
+                        <Icon className="w-6 h-6 text-white" />
+                    </div>
+
+                    {trendValue && (
+                        <div className={`flex items-center gap-1 ${trendColor} bg-[var(--surface-hover)] px-2 py-1 rounded-full`}>
+                            <TrendIcon className="w-4 h-4" />
+                            <span className="text-sm font-bold">{trendValue}</span>
+                        </div>
+                    )}
                 </div>
 
-                {trendValue && (
-                    <div className={`flex items-center gap-1 ${trendColor}`}>
-                        <TrendIcon className="w-4 h-4" />
-                        <span className="text-sm font-semibold">{trendValue}</span>
-                    </div>
-                )}
-            </div>
-
-            <div className={colors.text}>
-                <h3 className={`text-4xl font-bold mb-1 ${color === 'neutral' ? 'text-[var(--text-primary)]' : ''}`}>
-                    {value}
-                </h3>
-                <p className={`text-lg font-medium ${color === 'neutral' ? 'text-[var(--text-primary)]' : 'text-white/90'}`}>
-                    {title}
-                </p>
-                {subtitle && (
-                    <p className={`text-sm mt-1 ${color === 'neutral' ? 'text-[var(--text-muted)]' : 'text-white/70'}`}>
-                        {subtitle}
+                <div>
+                    <h3 className="text-4xl font-bold text-[var(--text-primary)] mb-1 tracking-tight">
+                        {value}
+                    </h3>
+                    <p className="text-base font-medium text-[var(--text-secondary)]">
+                        {title}
                     </p>
-                )}
+                    {subtitle && (
+                        <p className="text-sm text-[var(--text-muted)] mt-1">
+                            {subtitle}
+                        </p>
+                    )}
+                </div>
             </div>
         </div>
     );

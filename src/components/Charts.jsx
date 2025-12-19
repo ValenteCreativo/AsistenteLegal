@@ -30,7 +30,7 @@ ChartJS.register(
     Filler
 );
 
-// Configuración base para todas las gráficas
+// Configuración base para todas las gráficas - DARK MODE
 const baseOptions = {
     responsive: true,
     maintainAspectRatio: false,
@@ -40,23 +40,46 @@ const baseOptions = {
             labels: {
                 padding: 20,
                 font: {
-                    size: 14,
+                    size: 13,
                     family: 'Inter'
                 },
+                color: 'rgba(255, 255, 255, 0.7)',
                 usePointStyle: true,
                 pointStyle: 'circle'
             }
         },
         tooltip: {
-            backgroundColor: '#1e293b',
+            backgroundColor: 'rgba(15, 15, 25, 0.95)',
             titleFont: { size: 14, family: 'Inter', weight: '600' },
+            titleColor: '#fff',
             bodyFont: { size: 13, family: 'Inter' },
-            padding: 12,
-            cornerRadius: 8,
+            bodyColor: 'rgba(255,255,255,0.8)',
+            padding: 14,
+            cornerRadius: 12,
             displayColors: true,
-            boxPadding: 6
+            boxPadding: 6,
+            borderColor: 'rgba(6, 182, 212, 0.3)',
+            borderWidth: 1
         }
     }
+};
+
+// Colores neón para las gráficas
+const neonColors = {
+    backgrounds: [
+        'rgba(6, 182, 212, 0.8)',
+        'rgba(16, 185, 129, 0.8)',
+        'rgba(245, 158, 11, 0.8)',
+        'rgba(139, 92, 246, 0.8)',
+        'rgba(236, 72, 153, 0.8)'
+    ],
+    borders: [
+        'rgb(6, 182, 212)',
+        'rgb(16, 185, 129)',
+        'rgb(245, 158, 11)',
+        'rgb(139, 92, 246)',
+        'rgb(236, 72, 153)'
+    ]
 };
 
 // Gráfica de Barras - Tipos de Casos
@@ -66,20 +89,8 @@ export function BarChart({ data, title = 'Casos por Tipo' }) {
         datasets: [{
             label: 'Número de casos',
             data: data?.values || [12, 19, 8, 15, 6],
-            backgroundColor: [
-                'rgba(37, 99, 235, 0.8)',
-                'rgba(5, 150, 105, 0.8)',
-                'rgba(245, 158, 11, 0.8)',
-                'rgba(139, 92, 246, 0.8)',
-                'rgba(236, 72, 153, 0.8)'
-            ],
-            borderColor: [
-                'rgb(37, 99, 235)',
-                'rgb(5, 150, 105)',
-                'rgb(245, 158, 11)',
-                'rgb(139, 92, 246)',
-                'rgb(236, 72, 153)'
-            ],
+            backgroundColor: neonColors.backgrounds,
+            borderColor: neonColors.borders,
             borderWidth: 2,
             borderRadius: 8,
             borderSkipped: false,
@@ -93,25 +104,32 @@ export function BarChart({ data, title = 'Casos por Tipo' }) {
             title: {
                 display: true,
                 text: title,
-                font: { size: 18, family: 'Inter', weight: '600' },
+                font: { size: 16, family: 'Inter', weight: '600' },
+                color: '#fff',
                 padding: { bottom: 20 }
             }
         },
         scales: {
             y: {
                 beginAtZero: true,
-                grid: { color: 'rgba(0,0,0,0.05)' },
-                ticks: { font: { size: 12, family: 'Inter' } }
+                grid: { color: 'rgba(255,255,255,0.05)' },
+                ticks: {
+                    font: { size: 12, family: 'Inter' },
+                    color: 'rgba(255,255,255,0.5)'
+                }
             },
             x: {
                 grid: { display: false },
-                ticks: { font: { size: 12, family: 'Inter' } }
+                ticks: {
+                    font: { size: 12, family: 'Inter' },
+                    color: 'rgba(255,255,255,0.5)'
+                }
             }
         }
     };
 
     return (
-        <div className="bg-white rounded-2xl p-6 shadow-sm border border-[var(--border)] h-80">
+        <div className="bg-[var(--glass-bg)] backdrop-blur-xl rounded-2xl p-6 border border-[var(--border)] h-80">
             <Bar data={chartData} options={options} />
         </div>
     );
@@ -125,25 +143,27 @@ export function LineChart({ data, title = 'Casos por Mes' }) {
             {
                 label: 'Casos nuevos',
                 data: data?.nuevos || [4, 6, 5, 8, 7, 10],
-                borderColor: 'rgb(37, 99, 235)',
-                backgroundColor: 'rgba(37, 99, 235, 0.1)',
+                borderColor: 'rgb(6, 182, 212)',
+                backgroundColor: 'rgba(6, 182, 212, 0.1)',
                 tension: 0.4,
                 fill: true,
                 pointRadius: 6,
                 pointHoverRadius: 8,
-                pointBackgroundColor: 'white',
+                pointBackgroundColor: '#0a0a0f',
+                pointBorderColor: 'rgb(6, 182, 212)',
                 pointBorderWidth: 3
             },
             {
                 label: 'Casos cerrados',
                 data: data?.cerrados || [2, 4, 3, 6, 5, 8],
-                borderColor: 'rgb(5, 150, 105)',
-                backgroundColor: 'rgba(5, 150, 105, 0.1)',
+                borderColor: 'rgb(16, 185, 129)',
+                backgroundColor: 'rgba(16, 185, 129, 0.1)',
                 tension: 0.4,
                 fill: true,
                 pointRadius: 6,
                 pointHoverRadius: 8,
-                pointBackgroundColor: 'white',
+                pointBackgroundColor: '#0a0a0f',
+                pointBorderColor: 'rgb(16, 185, 129)',
                 pointBorderWidth: 3
             }
         ]
@@ -156,19 +176,26 @@ export function LineChart({ data, title = 'Casos por Mes' }) {
             title: {
                 display: true,
                 text: title,
-                font: { size: 18, family: 'Inter', weight: '600' },
+                font: { size: 16, family: 'Inter', weight: '600' },
+                color: '#fff',
                 padding: { bottom: 20 }
             }
         },
         scales: {
             y: {
                 beginAtZero: true,
-                grid: { color: 'rgba(0,0,0,0.05)' },
-                ticks: { font: { size: 12, family: 'Inter' } }
+                grid: { color: 'rgba(255,255,255,0.05)' },
+                ticks: {
+                    font: { size: 12, family: 'Inter' },
+                    color: 'rgba(255,255,255,0.5)'
+                }
             },
             x: {
                 grid: { display: false },
-                ticks: { font: { size: 12, family: 'Inter' } }
+                ticks: {
+                    font: { size: 12, family: 'Inter' },
+                    color: 'rgba(255,255,255,0.5)'
+                }
             }
         },
         interaction: {
@@ -178,7 +205,7 @@ export function LineChart({ data, title = 'Casos por Mes' }) {
     };
 
     return (
-        <div className="bg-white rounded-2xl p-6 shadow-sm border border-[var(--border)] h-80">
+        <div className="bg-[var(--glass-bg)] backdrop-blur-xl rounded-2xl p-6 border border-[var(--border)] h-80">
             <Line data={chartData} options={options} />
         </div>
     );
@@ -187,20 +214,20 @@ export function LineChart({ data, title = 'Casos por Mes' }) {
 // Gráfica de Dona - Resultados de Casos
 export function DoughnutChart({ data, title = 'Resultados de Casos' }) {
     const chartData = {
-        labels: data?.labels || ['Ganados', 'En proceso', 'Pendientes', 'Cerrados sin fallo'],
+        labels: data?.labels || ['Ganados', 'En proceso', 'Pendientes', 'Cerrados'],
         datasets: [{
             data: data?.values || [45, 25, 20, 10],
             backgroundColor: [
-                'rgba(5, 150, 105, 0.9)',
-                'rgba(37, 99, 235, 0.9)',
+                'rgba(16, 185, 129, 0.9)',
+                'rgba(6, 182, 212, 0.9)',
                 'rgba(245, 158, 11, 0.9)',
-                'rgba(148, 163, 184, 0.9)'
+                'rgba(100, 116, 139, 0.9)'
             ],
             borderColor: [
-                'rgb(5, 150, 105)',
-                'rgb(37, 99, 235)',
+                'rgb(16, 185, 129)',
+                'rgb(6, 182, 212)',
                 'rgb(245, 158, 11)',
-                'rgb(148, 163, 184)'
+                'rgb(100, 116, 139)'
             ],
             borderWidth: 2,
             hoverOffset: 10
@@ -215,7 +242,8 @@ export function DoughnutChart({ data, title = 'Resultados de Casos' }) {
             title: {
                 display: true,
                 text: title,
-                font: { size: 18, family: 'Inter', weight: '600' },
+                font: { size: 16, family: 'Inter', weight: '600' },
+                color: '#fff',
                 padding: { bottom: 10 }
             }
         }
@@ -225,11 +253,11 @@ export function DoughnutChart({ data, title = 'Resultados de Casos' }) {
     const total = chartData.datasets[0].data.reduce((a, b) => a + b, 0);
 
     return (
-        <div className="bg-white rounded-2xl p-6 shadow-sm border border-[var(--border)] h-80 relative">
+        <div className="bg-[var(--glass-bg)] backdrop-blur-xl rounded-2xl p-6 border border-[var(--border)] h-80 relative">
             <Doughnut data={chartData} options={options} />
             <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center pointer-events-none mt-4">
                 <p className="text-4xl font-bold text-[var(--text-primary)]">{total}</p>
-                <p className="text-sm text-[var(--text-muted)]">Total casos</p>
+                <p className="text-sm text-[var(--text-muted)]">Total</p>
             </div>
         </div>
     );

@@ -44,7 +44,7 @@ export default function Modal({
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
             {/* Overlay */}
             <div
-                className="absolute inset-0 bg-black/50 backdrop-blur-sm animate-fade-in"
+                className="absolute inset-0 bg-black/80 backdrop-blur-md animate-fade-in"
                 onClick={onClose}
             />
 
@@ -52,10 +52,17 @@ export default function Modal({
             <div
                 ref={modalRef}
                 className={`
-          relative bg-white rounded-2xl shadow-2xl w-full ${sizeClasses[size]}
+          relative w-full ${sizeClasses[size]}
+          bg-[var(--background-secondary)]/95 backdrop-blur-xl
+          border border-[var(--border)]
+          rounded-2xl shadow-2xl
           animate-fade-in max-h-[90vh] flex flex-col
+          overflow-hidden
         `}
             >
+                {/* Línea decorativa superior */}
+                <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[var(--accent-primary)] to-transparent" />
+
                 {/* Header */}
                 <div className="flex items-center justify-between p-6 border-b border-[var(--border)]">
                     <h2 className="text-2xl font-bold text-[var(--text-primary)]">
@@ -64,7 +71,7 @@ export default function Modal({
 
                     <button
                         onClick={onClose}
-                        className="p-2 rounded-xl hover:bg-[var(--surface-hover)] transition-colors text-[var(--text-muted)] hover:text-[var(--text-primary)]"
+                        className="p-2 rounded-xl bg-[var(--surface-hover)] hover:bg-[var(--danger)]/20 transition-colors text-[var(--text-muted)] hover:text-[var(--danger)]"
                     >
                         <X className="w-6 h-6" />
                     </button>
@@ -77,7 +84,7 @@ export default function Modal({
 
                 {/* Footer */}
                 {footer && (
-                    <div className="p-6 border-t border-[var(--border)] flex items-center justify-end gap-3">
+                    <div className="p-6 border-t border-[var(--border)] flex items-center justify-end gap-3 bg-[var(--glass-bg)]">
                         {footer}
                     </div>
                 )}
@@ -99,7 +106,7 @@ export function ConfirmModal({
 }) {
     const buttonClasses = {
         danger: 'btn btn-danger',
-        warning: 'bg-[var(--warning)] text-white',
+        warning: 'bg-[var(--warning)] text-black font-bold',
         primary: 'btn btn-primary'
     };
 

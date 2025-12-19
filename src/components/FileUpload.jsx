@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useRef } from 'react';
-import { Upload, File, X, Image, FileText, Archive, CheckCircle } from 'lucide-react';
+import { Upload, File, X, Image, FileText, Archive, CheckCircle, CloudUpload } from 'lucide-react';
 
 export default function FileUpload({
     onFileSelect,
@@ -79,10 +79,10 @@ export default function FileUpload({
             <div
                 className={`
           relative border-2 border-dashed rounded-2xl p-8 text-center
-          transition-all duration-300 cursor-pointer
+          transition-all duration-300 cursor-pointer overflow-hidden
           ${isDragging
-                        ? 'border-[var(--primary-600)] bg-[var(--primary-100)] scale-[1.02]'
-                        : 'border-[var(--border-strong)] hover:border-[var(--primary-600)] hover:bg-[var(--surface-hover)]'
+                        ? 'border-[var(--accent-primary)] bg-[var(--accent-primary)]/10 scale-[1.02]'
+                        : 'border-[var(--border)] hover:border-[var(--accent-primary)]/50 hover:bg-[var(--surface-hover)]'
                     }
         `}
                 onDragOver={handleDragOver}
@@ -90,6 +90,11 @@ export default function FileUpload({
                 onDrop={handleDrop}
                 onClick={() => fileInputRef.current?.click()}
             >
+                {/* Efecto de brillo */}
+                {isDragging && (
+                    <div className="absolute inset-0 bg-gradient-to-br from-[var(--accent-primary)]/10 to-transparent" />
+                )}
+
                 <input
                     ref={fileInputRef}
                     type="file"
@@ -103,26 +108,26 @@ export default function FileUpload({
           w-20 h-20 mx-auto mb-4 rounded-2xl flex items-center justify-center
           transition-all duration-300
           ${isDragging
-                        ? 'bg-[var(--primary-700)] text-white scale-110'
-                        : 'bg-[var(--primary-100)] text-[var(--primary-700)]'
+                        ? 'bg-[var(--accent-primary)] text-white scale-110 shadow-[0_0_30px_var(--accent-primary-glow)]'
+                        : 'bg-[var(--surface-hover)] text-[var(--accent-primary)]'
                     }
         `}>
-                    <Upload className="w-10 h-10" />
+                    <CloudUpload className="w-10 h-10" />
                 </div>
 
                 <h3 className="text-xl font-semibold text-[var(--text-primary)] mb-2">
-                    {isDragging ? '¡Suelta los archivos aquí!' : 'Arrastra tus archivos aquí'}
+                    {isDragging ? '¡Suelta los archivos!' : 'Arrastra tus archivos aquí'}
                 </h3>
 
                 <p className="text-[var(--text-muted)] mb-4">
-                    o haz clic para seleccionar archivos
+                    o haz clic para seleccionar
                 </p>
 
-                <span className="inline-block px-4 py-2 bg-[var(--primary-700)] text-white rounded-xl font-semibold text-base hover:bg-[var(--primary-800)] transition-colors">
+                <span className="btn btn-secondary py-2 px-6 text-sm">
                     Seleccionar archivos
                 </span>
 
-                <p className="text-sm text-[var(--text-muted)] mt-4">
+                <p className="text-xs text-[var(--text-muted)] mt-4">
                     Máximo {maxFiles} archivos • PDF, Word, Excel, Imágenes
                 </p>
             </div>
@@ -141,7 +146,7 @@ export default function FileUpload({
                             return (
                                 <div
                                     key={file.id}
-                                    className="flex items-center gap-4 p-4 bg-white rounded-xl border border-[var(--border)] hover:border-[var(--primary-600)] transition-colors group"
+                                    className="flex items-center gap-4 p-4 bg-[var(--glass-bg)] backdrop-blur-xl rounded-xl border border-[var(--border)] hover:border-[var(--accent-primary)]/50 transition-all group"
                                 >
                                     {/* Preview o icono */}
                                     {file.preview ? (
@@ -151,8 +156,8 @@ export default function FileUpload({
                                             className="w-14 h-14 rounded-lg object-cover"
                                         />
                                     ) : (
-                                        <div className="w-14 h-14 rounded-lg bg-[var(--primary-100)] flex items-center justify-center">
-                                            <FileIcon className="w-7 h-7 text-[var(--primary-700)]" />
+                                        <div className="w-14 h-14 rounded-lg bg-[var(--accent-primary)]/10 flex items-center justify-center">
+                                            <FileIcon className="w-7 h-7 text-[var(--accent-primary)]" />
                                         </div>
                                     )}
 
@@ -180,7 +185,7 @@ export default function FileUpload({
                                                 e.stopPropagation();
                                                 removeFile(file.id);
                                             }}
-                                            className="p-2 rounded-lg text-[var(--text-muted)] hover:bg-[var(--danger-light)] hover:text-[var(--danger)] transition-colors"
+                                            className="p-2 rounded-lg text-[var(--text-muted)] hover:bg-[var(--danger)]/20 hover:text-[var(--danger)] transition-colors"
                                         >
                                             <X className="w-5 h-5" />
                                         </button>
